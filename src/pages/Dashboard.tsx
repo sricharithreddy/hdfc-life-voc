@@ -163,9 +163,9 @@ export default function Dashboard() {
                   width={36}
                 />
                 <Tooltip formatter={(v) => `${v}%`} />
-                <RBar dataKey="positive" stackId="s" fill={palette.good} radius={[4, 4, 0, 0]} />
+                <RBar dataKey="positive" stackId="s" fill={palette.good} radius={[0, 0, 4, 4]} />
                 <RBar dataKey="neutral" stackId="s" fill={palette.inkSoft} />
-                <RBar dataKey="negative" stackId="s" fill={palette.bad} radius={[0, 0, 4, 4]} />
+                <RBar dataKey="negative" stackId="s" fill={palette.bad} radius={[4, 4, 0, 0]} />
                 <Legend iconType="circle" wrapperStyle={{ fontSize: 11 }} />
               </BarChart>
             </ResponsiveContainer>

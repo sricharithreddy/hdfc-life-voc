@@ -308,10 +308,13 @@ export default function RevenueIntel() {
         >
           <div className="h-[340px]">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={[...objectionAnalysis].sort(
+              {(() => {
+                const sortedByRevenue = [...objectionAnalysis].sort(
                   (a, b) => b.revenueLost - a.revenueLost
-                )}
+                );
+                return (
+              <BarChart
+                data={sortedByRevenue}
                 layout="vertical"
                 margin={{ left: 8, right: 16, top: 4 }}
               >
@@ -331,7 +334,7 @@ export default function RevenueIntel() {
                 />
                 <Tooltip formatter={(v) => inr(Number(v))} />
                 <RBar dataKey="revenueLost" radius={[0, 6, 6, 0]} barSize={14}>
-                  {objectionAnalysis.map((o, i) => (
+                  {sortedByRevenue.map((o, i) => (
                     <Cell
                       key={i}
                       fill={
@@ -345,6 +348,8 @@ export default function RevenueIntel() {
                   ))}
                 </RBar>
               </BarChart>
+                );
+              })()}
             </ResponsiveContainer>
           </div>
           <div className="mt-2 flex items-center gap-3 text-[11px] text-ink-500">
