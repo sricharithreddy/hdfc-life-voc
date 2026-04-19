@@ -88,6 +88,7 @@ export function Kpi({
   suffix,
   delta,
   trend,
+  good,
   hint,
   lens,
 }: {
@@ -95,11 +96,19 @@ export function Kpi({
   value: string;
   suffix?: string;
   delta?: string;
+  // `trend` reflects the actual direction the metric moved (up vs down).
   trend?: "up" | "down";
+  // `good` reflects whether that movement is favourable. For inverse metrics
+  // (e.g. AHT, Grievance TAT) a downward trend can still be good — set this
+  // explicitly to decouple arrow direction from colour.
+  good?: boolean;
   hint?: string;
   lens: Lens;
 }) {
-  const goodUp = trend === "up";
+  // Prefer explicit delta sign for the arrow so it always matches the label.
+  const deltaDown = delta?.trim().startsWith("-") ?? false;
+  const arrowUp = delta ? !deltaDown : trend !== "down";
+  const isGood = good ?? trend === "up";
   return (
     <div className="bg-white border border-ink-200 rounded-xl p-4 shadow-card flex flex-col gap-2">
       <div className="flex items-center justify-between">
@@ -119,10 +128,10 @@ export function Kpi({
           <span
             className={clsx(
               "inline-flex items-center gap-1 text-xs font-medium",
-              goodUp ? "text-emerald-600" : "text-rose-600"
+              isGood ? "text-emerald-600" : "text-rose-600"
             )}
           >
-            {goodUp ? (
+            {arrowUp ? (
               <ArrowUpRight className="h-3.5 w-3.5" />
             ) : (
               <ArrowDownRight className="h-3.5 w-3.5" />
